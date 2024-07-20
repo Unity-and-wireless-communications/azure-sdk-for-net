@@ -1407,8 +1407,9 @@ namespace Azure.ResourceManager.Compute.Models
         /// <param name="virtualMachines"> A list of references to all virtual machines in the availability set. </param>
         /// <param name="proximityPlacementGroupId"> Specifies information about the proximity placement group that the availability set should be assigned to. Minimum api-version: 2018-04-01. </param>
         /// <param name="statuses"> The resource status information. </param>
+        /// <param name="scheduledEventsPolicy"> Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the availability set. </param>
         /// <returns> A new <see cref="Compute.AvailabilitySetData"/> instance for mocking. </returns>
-        public static AvailabilitySetData AvailabilitySetData(ResourceIdentifier id = null, string name = null, ResourceType resourceType = default, SystemData systemData = null, IDictionary<string, string> tags = null, AzureLocation location = default, ComputeSku sku = null, int? platformUpdateDomainCount = null, int? platformFaultDomainCount = null, IEnumerable<WritableSubResource> virtualMachines = null, ResourceIdentifier proximityPlacementGroupId = null, IEnumerable<InstanceViewStatus> statuses = null)
+        public static AvailabilitySetData AvailabilitySetData(ResourceIdentifier id = null, string name = null, ResourceType resourceType = default, SystemData systemData = null, IDictionary<string, string> tags = null, AzureLocation location = default, ComputeSku sku = null, int? platformUpdateDomainCount = null, int? platformFaultDomainCount = null, IEnumerable<WritableSubResource> virtualMachines = null, ResourceIdentifier proximityPlacementGroupId = null, IEnumerable<InstanceViewStatus> statuses = null, ScheduledEventsPolicy scheduledEventsPolicy = null)
         {
             tags ??= new Dictionary<string, string>();
             virtualMachines ??= new List<WritableSubResource>();
@@ -1427,6 +1428,7 @@ namespace Azure.ResourceManager.Compute.Models
                 virtualMachines?.ToList(),
                 proximityPlacementGroupId != null ? ResourceManagerModelFactory.WritableSubResource(proximityPlacementGroupId) : null,
                 statuses?.ToList(),
+                scheduledEventsPolicy,
                 serializedAdditionalRawData: null);
         }
 
@@ -1438,8 +1440,9 @@ namespace Azure.ResourceManager.Compute.Models
         /// <param name="virtualMachines"> A list of references to all virtual machines in the availability set. </param>
         /// <param name="proximityPlacementGroupId"> Specifies information about the proximity placement group that the availability set should be assigned to. Minimum api-version: 2018-04-01. </param>
         /// <param name="statuses"> The resource status information. </param>
+        /// <param name="scheduledEventsPolicy"> Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the availability set. </param>
         /// <returns> A new <see cref="Models.AvailabilitySetPatch"/> instance for mocking. </returns>
-        public static AvailabilitySetPatch AvailabilitySetPatch(IDictionary<string, string> tags = null, ComputeSku sku = null, int? platformUpdateDomainCount = null, int? platformFaultDomainCount = null, IEnumerable<WritableSubResource> virtualMachines = null, ResourceIdentifier proximityPlacementGroupId = null, IEnumerable<InstanceViewStatus> statuses = null)
+        public static AvailabilitySetPatch AvailabilitySetPatch(IDictionary<string, string> tags = null, ComputeSku sku = null, int? platformUpdateDomainCount = null, int? platformFaultDomainCount = null, IEnumerable<WritableSubResource> virtualMachines = null, ResourceIdentifier proximityPlacementGroupId = null, IEnumerable<InstanceViewStatus> statuses = null, ScheduledEventsPolicy scheduledEventsPolicy = null)
         {
             tags ??= new Dictionary<string, string>();
             virtualMachines ??= new List<WritableSubResource>();
@@ -1453,7 +1456,8 @@ namespace Azure.ResourceManager.Compute.Models
                 platformFaultDomainCount,
                 virtualMachines?.ToList(),
                 proximityPlacementGroupId != null ? ResourceManagerModelFactory.WritableSubResource(proximityPlacementGroupId) : null,
-                statuses?.ToList());
+                statuses?.ToList(),
+                scheduledEventsPolicy);
         }
 
         /// <summary> Initializes a new instance of <see cref="Compute.ProximityPlacementGroupData"/>. </summary>
@@ -4212,6 +4216,41 @@ namespace Azure.ResourceManager.Compute.Models
         public static OSVersionPropertiesBase OSVersionPropertiesBase(string version = null, string label = null, bool? isDefault = null, bool? isActive = null)
         {
             return new OSVersionPropertiesBase(version, label, isDefault, isActive, serializedAdditionalRawData: null);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="T:Azure.ResourceManager.Compute.AvailabilitySetData" />. </summary>
+        /// <param name="id"> The id. </param>
+        /// <param name="name"> The name. </param>
+        /// <param name="resourceType"> The resourceType. </param>
+        /// <param name="systemData"> The systemData. </param>
+        /// <param name="tags"> The tags. </param>
+        /// <param name="location"> The location. </param>
+        /// <param name="sku"> Sku of the availability set, only name is required to be set. See AvailabilitySetSkuTypes for possible set of values. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines with unmanaged disks. Default value is 'Classic'. </param>
+        /// <param name="platformUpdateDomainCount"> Update Domain count. </param>
+        /// <param name="platformFaultDomainCount"> Fault Domain count. </param>
+        /// <param name="virtualMachines"> A list of references to all virtual machines in the availability set. </param>
+        /// <param name="proximityPlacementGroupId"> Specifies information about the proximity placement group that the availability set should be assigned to. Minimum api-version: 2018-04-01. </param>
+        /// <param name="statuses"> The resource status information. </param>
+        /// <returns> A new <see cref="T:Azure.ResourceManager.Compute.AvailabilitySetData" /> instance for mocking. </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static AvailabilitySetData AvailabilitySetData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, IDictionary<string, string> tags, AzureLocation location, ComputeSku sku, int? platformUpdateDomainCount, int? platformFaultDomainCount, IEnumerable<WritableSubResource> virtualMachines, ResourceIdentifier proximityPlacementGroupId, IEnumerable<InstanceViewStatus> statuses)
+        {
+            return AvailabilitySetData(id: id, name: name, resourceType: resourceType, systemData: systemData, tags: tags, location: location, sku: sku, platformUpdateDomainCount: platformUpdateDomainCount, platformFaultDomainCount: platformFaultDomainCount, virtualMachines: virtualMachines, proximityPlacementGroupId: proximityPlacementGroupId, statuses: statuses, scheduledEventsPolicy: default);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="T:Azure.ResourceManager.Compute.Models.AvailabilitySetPatch" />. </summary>
+        /// <param name="tags"> Resource tags. </param>
+        /// <param name="sku"> Sku of the availability set. </param>
+        /// <param name="platformUpdateDomainCount"> Update Domain count. </param>
+        /// <param name="platformFaultDomainCount"> Fault Domain count. </param>
+        /// <param name="virtualMachines"> A list of references to all virtual machines in the availability set. </param>
+        /// <param name="proximityPlacementGroupId"> Specifies information about the proximity placement group that the availability set should be assigned to. Minimum api-version: 2018-04-01. </param>
+        /// <param name="statuses"> The resource status information. </param>
+        /// <returns> A new <see cref="T:Azure.ResourceManager.Compute.Models.AvailabilitySetPatch" /> instance for mocking. </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static AvailabilitySetPatch AvailabilitySetPatch(IDictionary<string, string> tags, ComputeSku sku, int? platformUpdateDomainCount, int? platformFaultDomainCount, IEnumerable<WritableSubResource> virtualMachines, ResourceIdentifier proximityPlacementGroupId, IEnumerable<InstanceViewStatus> statuses)
+        {
+            return AvailabilitySetPatch(tags: tags, sku: sku, platformUpdateDomainCount: platformUpdateDomainCount, platformFaultDomainCount: platformFaultDomainCount, virtualMachines: virtualMachines, proximityPlacementGroupId: proximityPlacementGroupId, statuses: statuses, scheduledEventsPolicy: default);
         }
 
         /// <summary> Initializes a new instance of <see cref="T:Azure.ResourceManager.Compute.VirtualMachineScaleSetData" />. </summary>
