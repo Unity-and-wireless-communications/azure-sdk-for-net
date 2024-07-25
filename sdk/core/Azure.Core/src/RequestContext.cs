@@ -3,7 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.ComponentModel;
+using System.ServiceModel.Rest;
 using Azure.Core;
 using Azure.Core.Pipeline;
 
@@ -12,7 +13,7 @@ namespace Azure
     /// <summary>
     /// Options that can be used to control the behavior of a request sent by a client.
     /// </summary>
-    public class RequestContext
+    public class RequestContext : PipelineOptions
     {
         private bool _frozen;
 
@@ -27,12 +28,35 @@ namespace Azure
         /// <summary>
         /// Controls under what conditions the operation raises an exception if the underlying response indicates a failure.
         /// </summary>
-        public ErrorOptions ErrorOptions { get; set; } = ErrorOptions.Default;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ErrorOptions ErrorOptions
+        {
+            get => FromResultErrorOptions(ResultErrorOptions);
+            set
+            {
+                ResultErrorOptions = ToResultErrorOptions(value);
+            }
+        }
 
-        /// <summary>
-        /// The token to check for cancellation.
-        /// </summary>
-        public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
+        private ErrorOptions FromResultErrorOptions(ResultErrorOptions errorOptions)
+        {
+            return errorOptions switch
+            {
+                ResultErrorOptions.Default => ErrorOptions.Default,
+                ResultErrorOptions.NoThrow => ErrorOptions.NoThrow,
+                _ => throw new NotSupportedException(),
+            };
+        }
+
+        private ResultErrorOptions ToResultErrorOptions(ErrorOptions errorOptions)
+        {
+            return errorOptions switch
+            {
+                ErrorOptions.Default => ResultErrorOptions.Default,
+                ErrorOptions.NoThrow => ResultErrorOptions.NoThrow,
+                _ => throw new NotSupportedException(),
+            };
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestContext"/> class.
