@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>
@@ -21,7 +21,8 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Core" />
-    <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="System.Memory.Data" VersionOverride="7.0.0" />
+    <PackageReference Include="System.Text.Json"  VersionOverride ="7.0.0"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +32,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Communication.Common" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Trouter">
+      <HintPath>..\..\..\..\..\TrouterSource\async_transport_trouterservice\artifacts\bin\Microsoft.Trouter\Debug\netstandard2.0\Microsoft.Trouter.dll</HintPath>
+    </Reference>
+    <Reference Include="Trouter.ClientSdk">
+      <HintPath>..\..\..\..\..\TrouterSource\async_transport_trouterservice\artifacts\bin\Microsoft.Trouter\Debug\netstandard2.0\Trouter.ClientSdk.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
