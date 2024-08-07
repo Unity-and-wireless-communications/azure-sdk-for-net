@@ -31,5 +31,7 @@ extends:
     BuildSnippets: false
     ArtifactName: packages
     Artifacts:
+    - name: Azure.Security.ConfidentialLedgerBugBash
+      safeName: AzureSecurityConfidentialLedgerBugBash
     - name: Azure.Security.ConfidentialLedger
       safeName: AzureConfidentialLedger
